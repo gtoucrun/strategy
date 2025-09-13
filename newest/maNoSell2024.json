@@ -1,0 +1,730 @@
+{
+    "name": "maNoSell2024",
+    "sourceDBPath": "DB",
+    "stockSource": "all",
+    "stockType": "SZ",
+    "stockList": ["300777"],
+    "startDate": 20250801,
+    "endDate": -1,
+    "verifyWithSell": "false",
+    "renderHtml": "true",
+    "beforeShowDay": 30,
+    "afterShowDay": 30,
+    "beforeShowDayPinType": "min",
+    "beforeShowDayPinKey": "close",
+    "afterShowDayPinType": "max",
+    "afterShowDayPinKey": "close",
+    "showIndex": "SH000001",
+    "resultHtmlDir": "html",
+    "resultDBDir": "db",
+    "saveFilteredData": "false",
+    "initialCash": 100000,
+    "mostInMarketNum": 10,
+    "buyInterval": 0,
+    "reciverEmail": "ouctuan@163.com",
+    "buyStrategies":
+    {
+        "buyPoint": "close",
+        "strategies": 
+        [
+            {
+                "strategyName": "aaa",
+                "conditions":
+                [
+                    {
+                        "enabled": 1,
+                        "dataType": "self",
+                        "varConfig":
+                        {
+                            "useVarConfig":
+                            {
+                                "enbaled": "false",
+                                "configs":
+                                [
+                                ]
+                            },
+                            "genVarConfig":
+                            {
+                                "enabled": "false",
+                                "configs":
+                                [
+                                ]
+                            }
+                        },
+                        "sourceKey": "ma10",
+                        "sourceDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "sourceDataMethod": "value",
+                        "compareSourceRelativeDay": 0,
+                        "sourceFixValue": -9999,
+                        "compareType": "higher",
+                        "deviationPct": 0,
+                        "difRatioPct": 0,
+                        "destKey": "ma20",
+                        "destDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "destDataMethod": "value",
+                        "compareDestRelativeDay": 0,
+                        "destFixValue": -9999,
+                        "range":
+                        {
+                            "type": "all",
+                            "count": 0,
+                            "rangeStart": -8,
+                            "rangeEnd": 0
+                        }
+                    },
+                    {
+                        "enabled": 0,
+                        "dataType": "self",
+                        "varConfig":
+                        {
+                            "useVarConfig":
+                            {
+                                "enbaled": "false",
+                                "configs":
+                                [
+                                ]
+                            },
+                            "genVarConfig":
+                            {
+                                "enabled": "false",
+                                "configs":
+                                [
+                                ]
+                            }
+                        },
+                        "sourceKey": "low",
+                        "sourceDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "sourceDataMethod": "value",
+                        "compareSourceRelativeDay": 0,
+                        "sourceFixValue": -9999,
+                        "compareType": "higher",
+                        "deviationPct": 0,
+                        "difRatioPct": 0,
+                        "destKey": "ma20",
+                        "destDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "destDataMethod": "ma20",
+                        "compareDestRelativeDay": 0,
+                        "destFixValue": -9999,
+                        "range":
+                        {
+                            "type": "all",
+                            "count": 0,
+                            "rangeStart": -8,
+                            "rangeEnd": 0
+                        }
+                    },
+                    {
+                        "enabled": 1,
+                        "dataType": "self",
+                        "varConfig":
+                        {
+                            "useVarConfig":
+                            {
+                                "enbaled": "false",
+                                "configs":
+                                [
+                                ]
+                            },
+                            "genVarConfig":
+                            {
+                                "enabled": "false",
+                                "configs":
+                                [
+                                ]
+                            }
+                        },
+                        "sourceKey": "ma20",
+                        "sourceDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "sourceDataMethod": "value",
+                        "compareSourceRelativeDay": 0,
+                        "sourceFixValue": -9999,
+                        "compareType": "higher",
+                        "deviationPct": 0,
+                        "difRatioPct": 0,
+                        "destKey": "ma30",
+                        "destDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "destDataMethod": "value",
+                        "compareDestRelativeDay": 0,
+                        "destFixValue": -9999,
+                        "range":
+                        {
+                            "type": "all",
+                            "count": 0,
+                            "rangeStart": -8,
+                            "rangeEnd": 0
+                        }
+                    },
+                    {
+                        "enabled": 1,
+                        "dataType": "self",
+                        "varConfig":
+                        {
+                            "useVarConfig":
+                            {
+                                "enbaled": "false",
+                                "configs":
+                                [
+                                ]
+                            },
+                            "genVarConfig":
+                            {
+                                "enabled": "false",
+                                "configs":
+                                [
+                                ]
+                            }
+                        },
+                        "sourceKey": "ma30",
+                        "sourceDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "sourceDataMethod": "value",
+                        "compareSourceRelativeDay": 0,
+                        "sourceFixValue": -9999,
+                        "compareType": "higher",
+                        "deviationPct": 0,
+                        "difRatioPct": 0,
+                        "destKey": "ma60",
+                        "destDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "destDataMethod": "value",
+                        "compareDestRelativeDay": 0,
+                        "destFixValue": -9999,
+                        "range":
+                        {
+                            "type": "all",
+                            "count": 0,
+                            "rangeStart": -8,
+                            "rangeEnd": 0
+                        }
+                    },
+                    {
+                        "enabled": 1,
+                        "dataType": "self",
+                        "varConfig":
+                        {
+                            "useVarConfig":
+                            {
+                                "enbaled": "false",
+                                "configs":
+                                [
+                                ]
+                            },
+                            "genVarConfig":
+                            {
+                                "enabled": "false",
+                                "configs":
+                                [
+                                ]
+                            }
+                        },
+                        "sourceKey": "ma5",
+                        "sourceDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "sourceDataMethod": "value",
+                        "compareSourceRelativeDay": 0,
+                        "sourceFixValue": -9999,
+                        "compareType": "lower",
+                        "deviationPct": 0,
+                        "difRatioPct": 0,
+                        "destKey": "ma10",
+                        "destDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "destDataMethod": "value",
+                        "compareDestRelativeDay": 0,
+                        "destFixValue": -9999,
+                        "range":
+                        {
+                            "type": "all",
+                            "count": 0,
+                            "rangeStart": -1,
+                            "rangeEnd": 0
+                        }
+                    },
+                    {
+                        "enabled": 1,
+                        "dataType": "self",
+                        "varConfig":
+                        {
+                            "useVarConfig":
+                            {
+                                "enbaled": "false",
+                                "configs":
+                                [
+                                ]
+                            },
+                            "genVarConfig":
+                            {
+                                "enabled": "false",
+                                "configs":
+                                [
+                                ]
+                            }
+                        },
+                        "sourceKey": "ma5",
+                        "sourceDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "sourceDataMethod": "value",
+                        "compareSourceRelativeDay": 0,
+                        "sourceFixValue": -9999,
+                        "compareType": "higher",
+                        "deviationPct": 0,
+                        "difRatioPct": 0,
+                        "destKey": "ma10",
+                        "destDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "destDataMethod": "value",
+                        "compareDestRelativeDay": 0,
+                        "destFixValue": -9999,
+                        "range":
+                        {
+                            "type": "atLeast",
+                            "count": 5,
+                            "rangeStart": -8,
+                            "rangeEnd": -3
+                        }
+                    },
+                    {
+                        "enabled": 0,
+                        "dataType": "self",
+                        "varConfig":
+                        {
+                            "useVarConfig":
+                            {
+                                "enbaled": "false",
+                                "configs":
+                                [
+                                ]
+                            },
+                            "genVarConfig":
+                            {
+                                "enabled": "false",
+                                "configs":
+                                [
+                                ]
+                            }
+                        },
+                        "sourceKey": "average",
+                        "sourceDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "sourceDataMethod": "value",
+                        "compareSourceRelativeDay": 0,
+                        "sourceFixValue": -9999,
+                        "compareType": "higher",
+                        "deviationPct": 0,
+                        "difRatioPct": 0,
+                        "destKey": "ma10",
+                        "destDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "destDataMethod": "value",
+                        "compareDestRelativeDay": 0,
+                        "destFixValue": -9999,
+                        "range":
+                        {
+                            "type": "all",
+                            "count": 5,
+                            "rangeStart": -1,
+                            "rangeEnd": 0
+                        }
+                    },
+                    {
+                        "enabled": 1,
+                        "dataType": "self",
+                        "varConfig":
+                        {
+                            "useVarConfig":
+                            {
+                                "enbaled": "false",
+                                "configs":
+                                [
+                                ]
+                            },
+                            "genVarConfig":
+                            {
+                                "enabled": "false",
+                                "configs":
+                                [
+                                ]
+                            }
+                        },
+                        "sourceKey": "average",
+                        "sourceDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "sourceDataMethod": "value",
+                        "compareSourceRelativeDay": 0,
+                        "sourceFixValue": -9999,
+                        "compareType": "higher",
+                        "deviationPct": 2,
+                        "difRatioPct": 0,
+                        "destKey": "ma20",
+                        "destDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "destDataMethod": "value",
+                        "compareDestRelativeDay": 0,
+                        "destFixValue": -9999,
+                        "range":
+                        {
+                            "type": "all",
+                            "count": 5,
+                            "rangeStart": -8,
+                            "rangeEnd": 0
+                        }
+                    },
+                    {
+                        "enabled": 1,
+                        "dataType": "self",
+                        "varConfig":
+                        {
+                            "useVarConfig":
+                            {
+                                "enbaled": "false",
+                                "configs":
+                                [
+                                ]
+                            },
+                            "genVarConfig":
+                            {
+                                "enabled": "false",
+                                "configs":
+                                [
+                                ]
+                            }
+                        },
+                        "sourceKey": "low",
+                        "sourceDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "sourceDataMethod": "value",
+                        "compareSourceRelativeDay": 0,
+                        "sourceFixValue": -9999,
+                        "compareType": "higher",
+                        "deviationPct": 2,
+                        "difRatioPct": 0,
+                        "destKey": "ma20",
+                        "destDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "destDataMethod": "value",
+                        "compareDestRelativeDay": 0,
+                        "destFixValue": -9999,
+                        "range":
+                        {
+                            "type": "all",
+                            "count": 5,
+                            "rangeStart": -8,
+                            "rangeEnd": 0
+                        }
+                    },
+                    {
+                        "enabled": 1,
+                        "dataType": "self",
+                        "varConfig":
+                        {
+                            "useVarConfig":
+                            {
+                                "enbaled": "false",
+                                "configs":
+                                [
+                                ]
+                            },
+                            "genVarConfig":
+                            {
+                                "enabled": "false",
+                                "configs":
+                                [
+                                ]
+                            }
+                        },
+                        "sourceKey": "open",
+                        "sourceDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "sourceDataMethod": "value",
+                        "compareSourceRelativeDay": 0,
+                        "sourceFixValue": -9999,
+                        "compareType": "higher",
+                        "deviationPct": 2,
+                        "difRatioPct": 0,
+                        "destKey": "close",
+                        "destDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "destDataMethod": "value",
+                        "compareDestRelativeDay": 0,
+                        "destFixValue": -9999,
+                        "range":
+                        {
+                            "type": "atMost",
+                            "count": 4,
+                            "rangeStart": -6,
+                            "rangeEnd": 0
+                        }
+                    }
+                ]
+            }
+
+
+        ]
+    },
+    "sellStrategies":
+    {
+        "sellPoint": "close",
+        "maxKeepDay": 2,
+        "strategies":
+        [
+            [
+                {
+                    "enabled": 1,
+                    "dataType": "self",
+                    "sourceKey": "close",
+                    "sourceDataRange":
+                    {
+                        "rangeStart": 0,
+                        "rangeEnd": 0
+                    },
+                    "sourceDataMethod": "value",
+                    "compareSourceRelativeDay": 0,
+                    "sourceFixValue": -9999,
+                    "compareType": "higher",
+                    "deviationPct": 0,
+                    "difRatioPct": 1,
+                    "destKey": "buyPrice",
+                    "destDataRange":
+                    {
+                        "rangeStart": 0,
+                        "rangeEnd": 0
+                    },
+                    "destDataMethod": "value",
+                    "compareDestRelativeDay": 0,
+                    "destFixValue": 5,
+                    "range":
+                    {
+                        "type": "atLeast",
+                        "count": 1,
+                        "rangeStart": 0,
+                        "rangeEnd": 0
+                    }
+                }
+            ]
+        ]
+    },
+    "verifyResult":
+    {
+        "strategies":
+        [
+                [
+                    {
+                        "enabled": 1,
+                        "name": "test1",
+                        "dataType": "self",
+                        "sourceKey": "close",
+                        "sourceDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "sourceDataMethod": "value",
+                        "compareSourceRelativeDay": 0,
+                        "sourceFixValue": -9999,
+                        "compareType": "higher",
+                        "deviationPct": 0,
+                        "difRatioPct": 1,
+                        "destKey": "close",
+                        "destDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "destDataMethod": "value",
+                        "compareDestRelativeDay": -1,
+                        "destFixValue": 5,
+                        "range":
+                        {
+                            "type": "atLeast",
+                            "count": 1,
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        }
+                    },
+                    {
+                        "enabled": 1,
+                        "name": "test2",
+                        "dataType": "self",
+                    "sourceKey": "vol",
+                    "sourceDataRange":
+                        {
+                        "rangeStart": 0,
+                        "rangeEnd": 0
+                    },
+                    "sourceDataMethod": "value",
+                    "compareSourceRelativeDay": 0,
+                    "sourceFixValue": -9999,
+                    "compareType": "lower",
+                    "deviationPct": 0,
+                    "difRatioPct": 1,
+                    "destKey": "vol",
+                    "destDataRange":
+                    {
+                        "rangeStart": 0,
+                        "rangeEnd": 0
+                    },
+                    "destDataMethod": "value",
+                    "compareDestRelativeDay": -1,
+                    "destFixValue": 5,
+                    "range":
+                    {
+                        "type": "atLeast",
+                        "count": 1,
+                        "rangeStart": 0,
+                        "rangeEnd": 0
+                            }
+                }
+            ],
+            [
+                {
+                    "enabled": 1,
+                    "name": "test3",
+                    "dataType": "self",
+                        "sourceKey": "vol",
+                        "sourceDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "sourceDataMethod": "value",
+                        "compareSourceRelativeDay": 0,
+                        "sourceFixValue": -9999,
+                        "compareType": "lower",
+                        "deviationPct": 0,
+                        "difRatioPct": 1,
+                        "destKey": "vol",
+                        "destDataRange":
+                        {
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        },
+                        "destDataMethod": "value",
+                        "compareDestRelativeDay": -1,
+                        "destFixValue": 5,
+                        "range":
+                        {
+                            "type": "atLeast",
+                            "count": 1,
+                            "rangeStart": 0,
+                            "rangeEnd": 0
+                        }
+                    }
+                ]
+        ]
+    },
+    "statisticResult":
+    {
+        "statistics":
+        [
+            {
+                "enabled": 1,
+                "dataType": "self",
+                "statisticPoint": "buy",
+                "dataSource": "ma10",
+                "statisticType": "single",
+                "statisticRange":
+                {
+                    "rangeStart": 0,
+                    "rangeEnd": 0
+                },
+                "statisticMethod": "value",
+                "relativeDay": 0
+            },
+            {
+                "enabled": 1,
+                "dataType": "self",
+                "statisticPoint": "buy",
+                "dataSource": "pct_chg",
+                "statisticType": "list",
+                "statisticRange":
+                {
+                    "rangeStart": -3,
+                    "rangeEnd": 0
+                },
+                "statisticMethod": "sum",
+                "relativeDay": 0
+            },
+            {
+                "enabled": 1,
+                "dataType": "self",
+                "statisticPoint": "buy",
+                "dataSource": "vol",
+                "statisticType": "list",
+                "statisticRange":
+                {
+                    "rangeStart": -3,
+                    "rangeEnd": 0
+                },
+                "statisticMethod": "sum",
+                "relativeDay": 0
+            }
+        ]
+    }
+
+}

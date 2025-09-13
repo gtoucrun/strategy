@@ -1,0 +1,178 @@
+{
+    "sourceDBPath": "DB",
+    "stockSource": "all",
+    "stockType": "SZ",
+    "stockList": ["300481"],
+    "startDate": 20240101,
+    "endDate": -1,
+    "renderHtml": "true",
+    "verifyWithSell": "false",
+    "name": "maNoSell",
+    "resultHtmlDir": "html",
+    "resultDBDir": "db",
+    "initialCash": 100000,
+    "mostInMarketNum": 10,
+    "buyStrategy":{
+
+    },
+    "buyStrategies":
+    {
+        "buyPoint": "close",
+        "strategies": 
+        [
+            [
+                {
+                    "dataType": "stock",
+                    "compareSource": "ma10",
+                    "compareSourceRelativeDay": 0,
+                    "compareType": "higher",
+                    "deviationPct": 0,
+                    "difRatioPct": 0,
+                    "compareDest": "ma20",
+                    "compareDestRelativeDay": 0,
+                    "fixValue": -9999,
+                    "range":
+                    {
+                        "type": "all",
+                        "count": 0,
+                        "rangeStart": -8,
+                        "rangeEnd": 0
+                    }
+                },
+                {
+                    "dataType": "stock",
+                    "compareSource": "ma20",
+                    "compareSourceRelativeDay": 0,
+                    "compareType": "higher",
+                    "deviationPct": 0,
+                    "difRatioPct": 0,
+                    "compareDest": "ma30",
+                    "compareDestRelativeDay": 0,
+                    "fixValue": -9999,
+                    "range":
+                    {
+                        "type": "all",
+                        "count": 0,
+                        "rangeStart": -8,
+                        "rangeEnd": 0
+                    }
+                },
+                {
+                    "dataType": "stock",
+                    "compareSource": "ma30",
+                    "compareSourceRelativeDay": 0,
+                    "compareType": "higher",
+                    "deviationPct": 0,
+                    "difRatioPct": 0,
+                    "compareDest": "ma60",
+                    "compareDestRelativeDay": 0,
+                    "fixValue": -9999,
+                    "range":
+                    {
+                        "type": "all",
+                        "count": 0,
+                        "rangeStart": -8,
+                        "rangeEnd": 0
+                    }
+                },
+                {
+                    "dataType": "stock",
+                    "compareSource": "ma5",
+                    "compareSourceRelativeDay": 0,
+                    "compareType": "lower",
+                    "deviationPct": 0,
+                    "difRatioPct": 0,
+                    "compareDest": "ma10",
+                    "compareDestRelativeDay": 0,
+                    "fixValue": -9999,
+                    "range":
+                    {
+                        "type": "all",
+                        "count": 0,
+                        "rangeStart": -1,
+                        "rangeEnd": 0
+                    }
+                },
+                {
+                    "dataType": "stock",
+                    "compareSource": "ma5",
+                    "compareSourceRelativeDay": 0,
+                    "compareType": "higher",
+                    "deviationPct": 0,
+                    "difRatioPct": 0,
+                    "compareDest": "ma10",
+                    "compareDestRelativeDay": 0,
+                    "fixValue": -9999,
+                    "range":
+                    {
+                        "type": "atLeast",
+                        "count": 4,
+                        "rangeStart": -8,
+                        "rangeEnd": -3
+                    }
+                },
+                {
+                    "dataType": "stock",
+                    "compareSource": "average",
+                    "compareSourceRelativeDay": 0,
+                    "compareType": "higher",
+                    "deviationPct": 0,
+                    "difRatioPct": 0,
+                    "compareDest": "ma10",
+                    "compareDestRelativeDay": -1,
+                    "fixValue": -9999,
+                    "range":
+                    {
+                        "type": "all",
+                        "count": 5,
+                        "rangeStart": -1,
+                        "rangeEnd": 0
+                    }
+                },
+                {
+                    "dataType": "stock",
+                    "compareSource": "average",
+                    "compareSourceRelativeDay": 0,
+                    "compareType": "higher",
+                    "deviationPct": 2,
+                    "difRatioPct": 0,
+                    "compareDest": "ma20",
+                    "compareDestRelativeDay": -1,
+                    "fixValue": -9999,
+                    "range":
+                    {
+                        "type": "all",
+                        "count": 5,
+                        "rangeStart": -8,
+                        "rangeEnd": 0
+                    }
+                }
+            ]
+        ]
+    },
+    "sellStrategies":
+    {
+        "sellPoint": "close",
+        "maxKeepDay": 2,
+        "strategies":
+        [
+            [
+                {
+                    "dataType": "stock",
+                    "compareSource": "close",
+                    "compareSourceRelativeDay": 0,
+                    "compareType": "higher",
+                    "deviationPct": 0,
+                    "difRatioPct": 1,
+                    "compareDest": "buyPrice",
+                    "compareDestRelativeDay": 0,
+                    "fixValue": 5,
+                    "range":
+                    {
+                        "rangeNum": 1
+                    }
+                }
+            ]
+        ]
+    }
+}

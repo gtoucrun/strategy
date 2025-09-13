@@ -1,0 +1,639 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "description": "strategy config",
+    "title": "strategy_config",
+    "type": "object",
+    "properties": {
+        "name": {
+            "description": "[system]测试名称，同时也是产生的所有log的文件夹名字",
+            "type": "string",
+            "default": "name"
+        },
+        "sourceDBPath": {
+            "description": "[system]存储股票数据的DB路径,几乎不需要更改",
+            "type": "string",
+            "default": "DB",
+            "enum": [
+                "DB",
+                "DBTest"
+            ]
+        },
+        "stockSource": {
+            "description": "[custom][*market未完成*]需要分析的股票来源类型",
+            "type": "string",
+            "default": "all",
+            "enum": [
+                "all",
+                "range",
+                "market"
+            ]
+        },
+        "stockType": {
+            "description": "[custom][*未完成*]{stockSource==range}如果股票来源类型是range，则需要指定type",
+            "type": "string",
+            "default": "SH",
+            "enum": [
+                "SH",
+                "SZ",
+                "BJ"
+            ]
+        },
+        "stockList": {
+            "description": "[custom]{stockSource==range}如果股票来源类型是range，指定了stockType后，需要指定有哪些股票",
+            "type": "array",
+            "minItems": 1,
+            "items": {
+                "type": "array",
+                "minItems": 0,
+                "items": {
+                    "type": "string"
+                }
+            }
+        },
+        "startDate": {
+            "description": "[custom]开始分析的日期",
+            "type": "integer",
+            "default": 20240102
+        },
+        "endDate": {
+            "description": "[custom]结束分析的日期,如果是-1，表示到当日",
+            "type": "integer",
+            "default": 20240731
+        },
+        "verifyWithSell": {
+            "description": "[custom]是否需要验证成功率",
+            "type": "string",
+            "default": "false",
+            "enum": [
+                "true",
+                "false"
+            ]
+        },
+        "renderHtml": {
+            "description": "[custom]是否需要产生html文件",
+            "type": "string",
+            "default": "false",
+            "enum": [
+                "true",
+                "false"
+            ]
+        },
+        "beforeShowDay": {
+            "description": "[custom]在html页面中，买入之前显示的天数",
+            "type": "integer",
+            "default": 30
+        },
+        "afterShowDay": {
+            "description": "[custom]在html页面中，买入之前（verifyWithSell为false）或者卖出之后，显示的天数",
+            "type": "integer",
+            "default": 30
+        },
+        "beforeShowDayPinType": {
+            "description": "[custom]在html页面买入之前显示的天数中，需要标记内容的类型",
+            "type": "string",
+            "default": "min",
+            "enum": [
+                "min",
+                "max"
+            ]
+        },
+        "beforeShowDayPinKey": {
+            "description": "[custom]在html页面买入之前显示的天数中，需要标记内容的key",
+            "type": "string",
+            "default": "close",
+            "enum": [
+                "close",
+                "open",
+                "high",
+                "low"
+            ]
+        },
+        "afterShowDayPinType": {
+            "description": "[custom]在html页面买入（verifyWithSell为false）/卖出之后显示的天数中，需要标记内容的类型",
+            "type": "string",
+            "default": "min",
+            "enum": [
+                "min",
+                "max"
+            ]
+        },
+        "afterShowDayPinKey": {
+            "description": "[custom]在html页面买入（verifyWithSell为false）/卖出之后显示的天数中，需要标记内容的key",
+            "type": "string",
+            "default": "close",
+            "enum": [
+                "close",
+                "open",
+                "high",
+                "low"
+            ]
+        },
+        "resultHtmlDir": {
+            "description": "[system]产生的所有html文件的文件夹名字",
+            "type": "string",
+            "default": "html"
+        },
+        "resultDBDir": {
+            "description": "[system]产生的所有db文件的文件夹名字",
+            "type": "string",
+            "default": "db"
+        },
+        "initialCash": {
+            "description": "[custom]{verifyWithSell==true}是否进行模拟交易，如果非零，则进行模拟交易",
+            "type": "integer",
+            "default": 100000
+        },
+        "mostInMarketNum": {
+            "description": "[custom]{initialCash!=0}如果进行模拟交易的话，当同时满足购买条件的股票很多时，买入的最多股票个数",
+            "type": "integer",
+            "default": 10
+        },
+        "buyInterval": {
+            "description": "[custom]{initialCash!=0}如果进行模拟交易的话，同一个股票买入的最小间隔天数",
+            "type": "integer",
+            "default": 0
+        },
+        "buyStrategies": {
+            "description": "筛选买入股票的买入点配置",
+            "type": "object",
+            "properties": {
+                "buyPoint": {
+                    "description": "[custom]如果判断符合条件，在什么时间点买入",
+                    "type": "string",
+                    "default": "close",
+                    "enum": [
+                        "close",
+                        "day2open"
+                    ]
+                },
+                "strategies": {
+                    "description": "[custom]该strategies下配置的所有condition是或的关系，满足其一就买入",
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "enabled": {
+                                    "description": "[custom]表示当前condition是否生效，用来暂存一些未决定是否使用的condition，1表示生效，0表示无效",
+                                    "type": "integer",
+                                    "default": 1,
+                                    "enum": [
+                                        0,
+                                        1
+                                    ]
+                                },
+                                "dataType": {
+                                    "description": "[custom][*index未完成*]用来判断的数据来源，可以是个股数据，也可以是指数数据，self是股票自己的数据，index是指数数据",
+                                    "type": "string",
+                                    "default": "stock",
+                                    "enum": [
+                                        "stock",
+                                        "index"
+                                    ]
+                                },
+                                "sourceKey": {
+                                    "description": "[custom]用来判断的数据来源类型",
+                                    "type": "string",
+                                    "default": "open",
+                                    "enum": [
+                                        "open",
+                                        "high",
+                                        "low",
+                                        "close",
+                                        "pre_close",
+                                        "change",
+                                        "pct_chg",
+                                        "vol",
+                                        "amount",
+                                        "turnover_rate",
+                                        "turnover_rate_f",
+                                        "volume_ratio",
+                                        "pe",
+                                        "pe_ttm",
+                                        "pb",
+                                        "ps",
+                                        "dv_ratio",
+                                        "dv_ttm",
+                                        "total_share",
+                                        "float_share",
+                                        "free_share",
+                                        "total_mv",
+                                        "circ_mv",
+                                        "ma5",
+                                        "ma10",
+                                        "ma20",
+                                        "ma30",
+                                        "ma60",
+                                        "ma100",
+                                        "ma120",
+                                        "ma200",
+                                        "ma300",
+                                        "average",
+                                        "averagema5",
+                                        "averagema10",
+                                        "averagema20",
+                                        "averagema30",
+                                        "averagema60",
+                                        "averagema100",
+                                        "averagema120",
+                                        "averagema200",
+                                        "averagema300",
+                                        "volma5",
+                                        "volma10",
+                                        "volma20",
+                                        "volma30",
+                                        "volma60",
+                                        "amountma5",
+                                        "amountma10",
+                                        "amountma20",
+                                        "amountma30",
+                                        "amountma60",
+                                        "DIF",
+                                        "DEA",
+                                        "MACD",
+                                        "fix"
+                                    ]
+                                },
+                                "sourceDataRange":
+                                {
+                                    "description": "[custom]用来判断的数据来源范围",
+                                    "type": "object",
+                                    "properties": {
+                                        "rangeStart": {
+                                            "description": "[custom]起始时间,最大值是0，表示验证到当日，start和end都为0时，表示当日",
+                                            "type": "integer",
+                                            "default": 0
+                                        },
+                                        "rangeEnd": {
+                                            "description": "[custom]结束时间, 最大值是0，表示验证到当日",
+                                            "type": "integer",
+                                            "default": 0
+                                        }
+                                    }
+                                },
+                                "sourceDataMethod": {
+                                    "description": "[custom]用来统计sourceData的方法。value:当且仅当rangeStart和rangeEnd都为0时生效；min:统计rangeStart和rangeEnd之间的最小值；max:统计rangeStart和rangeEnd之间的最大值；range:极差，统计rangeStart和rangeEnd之间的最大值和最小值之差;relativerange:相对极差，统计rangeStart和rangeEnd之间的最大值和最小值之差除以平均值;rsd:相对标准差，统计rangeStart和rangeEnd之间的标准差除以平均值*100;ave:平均值，统计rangeStart和rangeEnd之间的平均值",
+                                    "type": "string",
+                                    "default": "value",
+                                    "enum": [
+                                        "value",
+                                        "min",
+                                        "max",
+                                        "range",
+                                        "relativerange",
+                                        "rsd",
+                                        "ave"
+                                    ]
+                                },
+                                "compareSourceRelativeDay": {
+                                    "description": "[custom]相对于当前日期的相对日，需要小于0，如果为-1，表示前一天",
+                                    "type": "integer",
+                                    "default": 0
+                                },
+                                "sourceFixValue": {
+                                    "description": "[custom]指定compareSource的固定值，如果sourceKey是fix，则使用该值",
+                                    "type": "integer",
+                                    "default": -9999
+                                },
+                                "compareType": {
+                                    "description": "[custom]比较方法,如果higher,是source比dest high",
+                                    "type": "string",
+                                    "default": "higher",
+                                    "enum": [
+                                        "higher",
+                                        "lower",
+                                        "equal"
+                                    ]
+                                },
+                                "deviationPct": {
+                                    "description": "[custom]比较的可允许偏差，需要大于0，10表示10%，当compareType是equal时，表示比较结果需要落在（1-deviationPct/100,1+deviationPct/100）之间,当compareType是higher时，比较的结果需要落在（1-deviationPct/100,...)上，当compareType是lower时，比较的结果需要落在(...,1+deviationPct/100）上",
+                                    "type": "integer",
+                                    "default": 0
+                                },
+                                "difRatioPct": {
+                                    "description": "[custom]如果是higher,那么value需要大于0,比如说5,那么就是source需要至少比dest大5%;如果是lower,那么value需要小于0,比如说-5,那么source需要至少比dest小5%",
+                                    "type": "integer",
+                                    "default": "0"
+                                },
+                                "destKey": {
+                                    "description": "[custom]用来判断的目的数据类型",
+                                    "type": "string",
+                                    "default": "open",
+                                    "enum": [
+                                        "open",
+                                        "high",
+                                        "low",
+                                        "close",
+                                        "pre_close",
+                                        "change",
+                                        "pct_chg",
+                                        "vol",
+                                        "amount",
+                                        "turnover_rate",
+                                        "turnover_rate_f",
+                                        "volume_ratio",
+                                        "pe",
+                                        "pe_ttm",
+                                        "pb",
+                                        "ps",
+                                        "dv_ratio",
+                                        "dv_ttm",
+                                        "total_share",
+                                        "float_share",
+                                        "free_share",
+                                        "total_mv",
+                                        "circ_mv",
+                                        "ma5",
+                                        "ma10",
+                                        "ma20",
+                                        "ma30",
+                                        "ma60",
+                                        "ma100",
+                                        "ma120",
+                                        "ma200",
+                                        "ma300",
+                                        "average",
+                                        "averagema5",
+                                        "averagema10",
+                                        "averagema20",
+                                        "averagema30",
+                                        "averagema60",
+                                        "averagema100",
+                                        "averagema120",
+                                        "averagema200",
+                                        "averagema300",
+                                        "volma5",
+                                        "volma10",
+                                        "volma20",
+                                        "volma30",
+                                        "volma60",
+                                        "amountma5",
+                                        "amountma10",
+                                        "amountma20",
+                                        "amountma30",
+                                        "amountma60",
+                                        "DIF",
+                                        "DEA",
+                                        "MACD",
+                                        "fix"
+                                    ]
+                                },
+                                "destDataRange":
+                                {
+                                    "description": "[custom]用来判断的数据来源范围",
+                                    "type": "object",
+                                    "properties": {
+                                        "rangeStart": {
+                                            "description": "[custom]起始时间,最大值是0，表示验证到当日，start和end都为0时，表示当日",
+                                            "type": "integer",
+                                            "default": 0
+                                        },
+                                        "rangeEnd": {
+                                            "description": "[custom]结束时间, 最大值是0，表示验证到当日",
+                                            "type": "integer",
+                                            "default": 0
+                                        }
+                                    }
+                                },
+                                "destDataMethod": {
+                                    "description": "[custom]用来统计destData的方法。value:当且仅当rangeStart和rangeEnd都为0时生效；min:统计rangeStart和rangeEnd之间的最小值；max:统计rangeStart和rangeEnd之间的最大值；range:极差，统计rangeStart和rangeEnd之间的最大值和最小值之差;relativerange:相对极差，统计rangeStart和rangeEnd之间的最大值和最小值之差除以平均值;rsd:相对标准差，统计rangeStart和rangeEnd之间的标准差除以平均值*100;ave:平均值，统计rangeStart和rangeEnd之间的平均值",
+                                    "type": "string",
+                                    "default": "value",
+                                    "enum": [
+                                        "value",
+                                        "min",
+                                        "max",
+                                        "range",
+                                        "relativerange",
+                                        "rsd",
+                                        "ave"
+                                    ]
+                                },
+                                "compareDestRelativeDay": {
+                                    "description": "[custom]相对于当前日期的相对日，需要小于0，如果为-1，表示前一天",
+                                    "type": "integer",
+                                    "default": "0"
+                                },
+                                "destFixValue": {
+                                    "description": "[custom]指定compareDest的固定值，如果destKey是fix，则使用该值",
+                                    "type": "integer",
+                                    "default": -9999
+                                },
+                                "range": {
+                                    "description": "[custom]上述比较的范围",
+                                    "type": "object",
+                                    "properties": {
+                                        "type": {
+                                            "description": "范围",
+                                            "type": "string",
+                                            "default": "all",
+                                            "enum": [
+                                                "all",
+                                                "any",
+                                                "atLeast",
+                                                "atMost"
+                                            ]
+                                        },
+                                        "使用变量": {
+                                            "description": "[custom]结果对比后数量, 如果type是all，则该参数不生效",
+                                            "type": "integer",
+                                            "default": -1
+                                        },
+                                        "rangeStart": {
+                                            "description": "[custom]起始时间，0表示当日，-1表示前一日，需要小于等于0",
+                                            "type": "integer",
+                                            "default": -1
+                                        },
+                                        "rangeEnd": {
+                                            "description": "[custom]结束时间, 0表示当日，-1表示前一日，需要小于等于0，需要大于等于rangeStart",
+                                            "type": "integer",
+                                            "default": 0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "sellStrategies": {
+            "description": "[custom]配置卖出股票的时间点",
+            "type": "object",
+            "properties": {
+                "maxKeepDay": {
+                    "description": "[custom]最多持有几天，如果不满足卖出的condition后强制卖出",
+                    "type": "integer",
+                    "default": 999
+                },
+                "sellPoint": {
+                    "description": "如果判断符合条件，在什么时间点卖出",
+                    "type": "string",
+                    "default": "close",
+                    "enum": [
+                        "close",
+                        "day2open",
+                        "high"
+                    ]
+                },
+                "strategies": {
+                    "description": "该strategies下配置的所有condition是或的关系，满足其一就卖出",
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "array",
+                        "minItems": 1,
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "dataType": {
+                                    "description": "用来判断的数据来源，可以是个股数据，也可以是指数数据",
+                                    "type": "string",
+                                    "default": "stock",
+                                    "enum": [
+                                        "stock",
+                                        "index"
+                                    ]
+                                },
+                                "compareSource": {
+                                    "description": "用来判断的数据来源类型",
+                                    "type": "string",
+                                    "default": "price",
+                                    "enum": [
+                                        "open",
+                                        "high",
+                                        "low",
+                                        "close",
+                                        "pre_close",
+                                        "change",
+                                        "pct_chg",
+                                        "vol",
+                                        "amount",
+                                        "ma5",
+                                        "ma10",
+                                        "ma20",
+                                        "ma30",
+                                        "ma60",
+                                        "ma100",
+                                        "ma120",
+                                        "ma200",
+                                        "ma300",
+                                        "volma5",
+                                        "volma10",
+                                        "volma20",
+                                        "volma30",
+                                        "volma60",
+                                        "amountma5",
+                                        "amountma10",
+                                        "amountma20",
+                                        "amountma30",
+                                        "amountma60",
+                                        "DIF",
+                                        "DEA",
+                                        "MACD"
+                                    ]
+                                },
+                                "compareType": {
+                                    "description": "比较方法",
+                                    "type": "string",
+                                    "default": "higher",
+                                    "enum": [
+                                        "higher",
+                                        "lower",
+                                        "equal"
+                                    ]
+                                },
+                                "ratio": {
+                                    "description": "dest data的比例，为百分之",
+                                    "type": "integer",
+                                    "default": 0
+                                },
+                                "deviation": {
+                                    "description": "比较的可允许偏差",
+                                    "type": "string",
+                                    "default": "0.1%",
+                                    "enum": [
+                                        "0.1%",
+                                        "0.2%",
+                                        "0.5%",
+                                        "1%"
+                                    ]
+                                },
+                                "compareDest": {
+                                    "description": "用来判断的目的数据类型",
+                                    "type": "string",
+                                    "default": "price",
+                                    "enum": [
+                                        "fix",
+                                        "buyPrice",
+                                        "open",
+                                        "high",
+                                        "low",
+                                        "close",
+                                        "pre_close",
+                                        "change",
+                                        "pct_chg",
+                                        "vol",
+                                        "amount",
+                                        "ma5",
+                                        "ma10",
+                                        "ma20",
+                                        "ma30",
+                                        "ma60",
+                                        "ma100",
+                                        "ma120",
+                                        "ma200",
+                                        "ma300",
+                                        "volma5",
+                                        "volma10",
+                                        "volma20",
+                                        "volma30",
+                                        "volma60",
+                                        "amountma5",
+                                        "amountma10",
+                                        "amountma20",
+                                        "amountma30",
+                                        "amountma60",
+                                        "DIF",
+                                        "DEA",
+                                        "MACD"
+                                    ]
+                                },
+                                "range": {
+                                    "description": "上述比较的范围",
+                                    "type": "object",
+                                    "properties": {
+                                        "type": {
+                                            "description": "范围",
+                                            "type": "string",
+                                            "default": "all",
+                                            "enum": [
+                                                "all",
+                                                "any",
+                                                "atLeast",
+                                                "atMost"
+                                            ]
+                                        },
+                                        "rangeStart": {
+                                            "description": "起始时间",
+                                            "type": "integer",
+                                            "default": -1
+                                        },
+                                        "rangeEnd": {
+                                            "description": "最大值是0，表示验证到当日",
+                                            "type": "integer",
+                                            "default": 0
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
