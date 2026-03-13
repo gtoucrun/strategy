@@ -1,43 +1,38 @@
 {
-    "$schema": "http://json-schema.org/draft-04/schema#",
+    "$schema": "https://json-schema.org/draft/2019-09/schema",
     "description": "strategy config",
     "title": "strategy_config",
     "type": "object",
     "properties": {
-        "sourceDBPath": {
-            "description": "存储股票数据的DB路径",
+        "name": {
+            "description": "策略名字",
             "type": "string",
-            "default": "DB",
-            "enum": [
-                "DB",
-                "DBTest"
-            ]
+            "default": "newStrategy"
         },
         "stockSource": {
-            "description": "需要分析的股票来源类型",
+            "description": "需要分析的股票来源类型,allAStock是所有A股,allMainStock是所有主板股票,allCYStock是所有创业板股票,allKCStock是所有科创板股票,allBJStock是所有北交所股票,allCYKCStock是所有创业板和科创板股票,allMainCYStock是所有主板和创业板股票,range则表示指定范围,如果是range,需要在stockList里指定股票列表.",
             "type": "string",
-            "default": "all",
+            "default": "allAStock",
             "enum": [
-                "all",
+                "allAStock",
+                "allMainStock",
+                "allCYStock",
+                "allKCStock",
+                "allBJStock",
+                "allCYKCStock",
+                "allMainCYStock",
                 "range"
             ]
         },
-        "stockType": {
-            "description": "如果股票来源类型是range，则需要指定type",
-            "type": "string",
-            "default": "SH",
-            "enum": [
-                "SH",
-                "SZ",
-                "BJ"
-            ]
-        },
         "stockList": {
-            "description": "如果股票来源类型是range，指定了stockType后，需要指定有哪些股票",
+            "description": "如果stockSource是range,那么需要配置stockList.",
             "type": "array",
             "minItems": 1,
             "items": {
-                "type": "string"
+                "type": "string",
+                "pattern": "^(SH|SZ|BJ)\\d{6}$",
+                "minLength": 8,
+                "maxLength": 8
             }
         },
         "startDate": {
@@ -50,14 +45,15 @@
             "type": "integer",
             "default": 20240731
         },
-        "renderHtml": {
-            "description": "是否需要产生html文件",
-            "type": "string",
-            "default": "false",
-            "enum": [
-                "true",
-                "false"
-            ]
+        "endDateLastDateEnabled": {
+            "description": "endDate是否启用最后一个交易日",
+            "type": "boolean",
+            "default": false
+        },
+        "buyInterval": {
+            "description": "买入间隔，单位是分钟，比如说10，表示如果已经买入了股票，那么在10天内不会再买入新的股票",
+            "type": "integer",
+            "default": 0
         },
         "verifyWithSell": {
             "description": "是否需要验证成功率",
@@ -68,41 +64,430 @@
                 "false"
             ]
         },
-        "name": {
-            "description": "产生的所有log的文件夹名字",
+        "initialCash": {
+            "description": "初始资金",
+            "type": "integer",
+            "default": 100000
+        },
+        "mostInMarketNum": {
+            "description": "最多持有股票数量",
+            "type": "integer",
+            "default": 10
+        },
+        "showIndex": {
+            "description": "展示的指数",
             "type": "string",
-            "default": "withouttodayRaiseVerify"
+            "default": "SH000001"
+        },
+        "beforeShowDay": {
+            "description": "在买入点之前展示多少天的数据",
+            "type": "integer",
+            "default": 30
+        },
+        "afterShowDay": {
+            "description": "在买入或者卖出点之后展示多少天的数据",
+            "type": "integer",
+            "default": 30
+        },
+        "beforeShowDayPinType": {
+            "description": "在买入点之前展示的数据里，怎么标记买入点",
+            "type": "string",
+            "default": "min",
+            "enum": [
+                "min",
+                "max"
+            ]
+        },
+        "beforeShowDayPinKey": {
+            "description": "在买入点之前展示的数据里，标记买入点用的数据类型",
+            "type": "string",
+            "default": "close",
+            "enum": [
+                "close",
+                "open",
+                "high",
+                "low"
+            ]
+        },
+        "afterShowDayPinType": {
+            "description": "在买入或者卖出点之后展示的数据里，怎么标记买入点",
+            "type": "string",
+            "default": "max",
+            "enum": [
+                "min",
+                "max"
+            ]
+        },
+        "afterShowDayPinKey": {
+            "description": "在买入或者卖出点之后展示的数据里，标记买入点用的数据类型",
+            "type": "string",
+            "default": "close",
+            "enum": [
+                "close",
+                "open",
+                "high",
+                "low"
+            ]
+        },
+        "renderHtml": {
+            "description": "是否需要产生html文件",
+            "type": "string",
+            "default": "false",
+            "enum": [
+                "true",
+                "false"
+            ],
+            "deprecated": true
+        },
+        "saveFilteredData": {
+            "description": "是否需要保存筛选后的数据",
+            "type": "string",
+            "default": "false",
+            "enum": [
+                "true",
+                "false"
+            ],
+            "deprecated": true
         },
         "resultHtmlDir": {
             "description": "产生的所有html文件的文件夹名字",
             "type": "string",
-            "default": "html"
+            "default": "html",
+            "deprecated": true
         },
-        "resultDBDir": {
-            "description": "产生的所有db文件的文件夹名字",
+        "reciverEmail": {
+            "description": "回测结果接收邮箱",
             "type": "string",
-            "default": "db"
+            "default": "",
+            "deprecated": true
         },
         "buyStrategies": {
-            "description": "筛选买入股票的买入点配置",
+            "description": "筛选买入股票的买入点的所有配置",
             "type": "object",
             "properties": {
-                "buyPoint": {
-                    "description": "如果判断符合条件，在什么时间点买入",
-                    "type": "string",
-                    "default": "close",
-                    "enum": [
-                        "close",
-                        "day2open"
-                    ]
-                },
                 "strategies": {
-                    "description": "该strategies下配置的所有condition是或的关系，满足其一就买入",
+                    "description": "该strategies下配置的所有strategy是或的关系，满足其一就买入",
                     "type": "array",
                     "minItems": 1,
                     "items": {
-                        "type": "array",
-                        "minItems": 1,
+                        "type": "object",
+                        "properties": {
+                            "strategyName": {
+                                "description": "策略配置的名字",
+                                "type": "string",
+                                "default": "配置1"
+                            },
+                            "strategyNum": {
+                                "description": "策略配置的编号",
+                                "type": "integer",
+                                "default": 1
+                            },
+                            "buyPointType": {
+                                "description": "买入点类型，是日线级别还是分钟线级别",
+                                "type": "string",
+                                "default": "daily",
+                                "enum": [
+                                    "daily",
+                                    "min1",
+                                    "min5",
+                                    "min15",
+                                    "min30",
+                                    "min60"
+                                ]
+                            },
+                            "buyPointMinRangeStart": {
+                                "description": "如果买入点类型是分钟线级别，那么买入点的选择时间起点,格式是HH:MM，比如说09:30",
+                                "type": "string",
+                                "default": "09:30"
+                            },
+                            "buyPointMinRangeEnd": {
+                                "description": "如果买入点类型是分钟线级别，那么买入点的选择时间终点,格式是HH:MM，比如说10:30",
+                                "type": "string",
+                                "default": "10:30"
+                            },
+                            "buyPoint": {
+                                "description": "买入点的类型",
+                                "type": "string",
+                                "default": "close",
+                                "enum": [
+                                    "open",
+                                    "close",
+                                    "high",
+                                    "low"
+                                ]
+                            },
+                            "genVarsName": {
+                                "description": "该策略里生成变量的名字列表，生成变量可以在条件里使用，生成变量的值是在回测时根据配置生成的，比如说均线差值，均线差值比值等",
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "conditions": {
+                                "description": "策略条件,该strategy配置的所有条件是与的关系，满足所有条件才满足该strategy",
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "conditionName": {
+                                            "description": "条件的名字",
+                                            "type": "string",
+                                            "default": "条件1"
+                                        },
+                                        "conditionNum": {
+                                            "description": "条件的编号",
+                                            "type": "integer",
+                                            "default": 1
+                                        },
+                                        "enabled": {
+                                            "description": "该条件是否启用,如果未启用,则不参与回测,留作备用",
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "dataLevel": {
+                                            "description": "该条件用的数据级别，是日线数据还是分钟线数据",
+                                            "type": "string",
+                                            "default": "dayLevel",
+                                            "enum": [
+                                                "dayLevel",
+                                                "min1Level",
+                                                "min5Level",
+                                                "min15Level",
+                                                "min30Level",
+                                                "min60Level"
+                                            ]
+                                        },
+                                        "enableContiousValidate": {
+                                            "description": "dataLevel是min1Level, min5Level, min15Level, min30Level, min60Level的时候才生效, 是否按数据级别最小单位进行分段验证，比如，如果选中5分钟级别数据，起始时间点是9：30，结束时间点是11：30，又选中该选项，即分段验证被选中，则在验证中，将按每五分钟的时间段进行验证，否则，表示9：30-11：30整体时间段满足条件",
+                                            "type": "boolean",
+                                            "default": false
+                                        },
+                                        "minLevelCompareRangeType": {
+                                            "description": "dataLevel是min1Level, min5Level, min15Level, min30Level, min60Level的时候才生效, 如果选择全部时间段,则所有*分钟级别(数据级别中选中的)时间段都需要满足,如果选中最大比例,则满足条件的时间段数量需要小于等于总时间段的百分比,如果选中最小比例,则满足条件的时间段数量需要大于等于总时间段的百分比",
+                                            "type": "string",
+                                            "default": "all",
+                                            "enum": [
+                                                "all",
+                                                "mostPercent",
+                                                "leastPercent"
+                                            ]
+                                        },
+                                        "minLevelCompareRangePct": {
+                                            "description": "dataLevel是min1Level, min5Level, min15Level, min30Level, min60Level的时候才生效, 如果该处配置90, 则当满足条件配置的是最大比例时,满足条件的时间段数量需要小于等于总时间段的90%,当满足条件配置的是最小比例时,满足条件的时间段数量需要大于等于总时间段的90%",
+                                            "type": "integer",
+                                            "default": 90,
+                                            "minimum": 0,
+                                            "maximum": 100
+                                        },
+                                        "startTime": {
+                                            "description": "dataLevel是min1Level, min5Level, min15Level, min30Level, min60Level的时候才生效, 验证的起始时间，格式是HH:MM，比如说09:30",
+                                            "type": "string",
+                                            "default": "09:30"
+                                        },
+                                        "endTime": {
+                                            "description": "dataLevel是min1Level, min5Level, min15Level, min30Level, min60Level的时候才生效, 验证的结束时间，格式是HH:MM，比如说11:30",
+                                            "type": "string",
+                                            "default": "11:30"
+                                        },
+                                        "dataType": {
+                                            "description": "用来判断的数据来源，可以是个股数据，也可以是指数数据, self代表个股数据, 其它的代表对应的指数数据",
+                                            "type": "string",
+                                            "default": "self",
+                                            "enum": [
+                                                "stock",
+                                                "SH000001"
+                                            ]
+                                        },
+                                        "varConfig": {
+                                            "description": "满足该条件的情况下, 从满足条件的数据中生成变量配置",
+                                            "type": "object",
+                                            "properties": {
+                                                "genVarConfig": {
+                                                    "description": "生成变量配置",
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "enabled": {
+                                                            "description": "是否启用生成变量配置",
+                                                            "type": "boolean",
+                                                            "default": false
+                                                        },
+                                                        "configs": {
+                                                            "description": "生成变量的具体配置列表",
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "varName": {
+                                                                        "description": "变量名字",
+                                                                        "type": "string"
+                                                                    },
+                                                                    "genVarKey": {
+                                                                        "description": "用来生成变量的数据类型",
+                                                                        "type": "string",
+                                                                        "default": "close",
+                                                                        "enum": [
+                                                                            "close",
+                                                                            "open",
+                                                                            "today_open",
+                                                                            "high",
+                                                                            "low",
+                                                                            "average",
+                                                                            "interval_average",
+                                                                            "day_average",
+                                                                            "pre_close",
+                                                                            "change",
+                                                                            "pct_chg",
+                                                                            "interval_chg_pct",
+                                                                            "day_chg_pct",
+                                                                            "vol",
+                                                                            "sum_vol",
+                                                                            "amount",
+                                                                            "sum_amount",
+                                                                            "ma5",
+                                                                            "ma10",
+                                                                            "ma20",
+                                                                            "ma30",
+                                                                            "ma60",
+                                                                            "ma100",
+                                                                            "ma120",
+                                                                            "ma200",
+                                                                            "ma300",
+                                                                            "volma5",
+                                                                            "volma10",
+                                                                            "volma20",
+                                                                            "volma30",
+                                                                            "volma60",
+                                                                            "amountma5",
+                                                                            "amountma10",
+                                                                            "amountma20",
+                                                                            "amountma30",
+                                                                            "amountma60",
+                                                                            "DIF",
+                                                                            "DEA",
+                                                                            "MACD",
+                                                                            "boll_lower",
+                                                                            "boll_mid",
+                                                                            "boll_upper",
+                                                                            "kdj_k",
+                                                                            "kdj_d",
+                                                                            "kdj_j",
+                                                                            "rsi_6",
+                                                                            "rsi_12",
+                                                                            "rsi_24",
+                                                                            "turnover_rate",
+                                                                            "interval_turnover_rate",
+                                                                            "day_turnover_rate",
+                                                                            "volume_ratio",
+                                                                            "total_mv",
+                                                                            "circ_mv"
+                                                                        ]
+                                                                    },
+                                                                    "selectSequence": {
+                                                                        "description": "如果生成变量需要从满足条件的数据中选择一个数据来生成变量，那么该配置用来配置选择哪个数据，比如说满足条件的有三个时间端，选第一个还是最后一个 ",
+                                                                        "type": "string",
+                                                                        "default": "first",
+                                                                        "enum": [
+                                                                            "first",
+                                                                            "last"
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "sourceKey": {
+                                        },
+                                        "sourceDataRange": {
+                                        },
+                                        "sourceDataMethod": {
+                                        },
+                                        "compareSourceRelativeDay": {
+                                        },
+                                        "sourceFixValue": {
+                                        },
+                                        "sourceKeyVar": {
+                                        },
+                                        "compareType": {
+                                        },
+                                        "deviationPct": {
+                                        },
+                                        "difRatioPct": {
+                                        },
+                                        "destKey": {
+                                        },
+                                        "destDataRange": {
+                                        },
+                                        "destDataMethod": {
+                                        },
+                                        "compareDestRelativeDay": {
+                                        },
+                                        "destFixValue": {
+                                        },
+                                        "destKeyVar": {
+                                        },
+                                        "range": {
+                                            "description": "上述比较的范围",
+                                            "type": "object",
+                                            "properties": {
+                                                "type": {
+                                                    "description": "范围",
+                                                    "type": "string",
+                                                    "default": "all",
+                                                    "enum": [
+                                                        "all",
+                                                        "any",
+                                                        "atLeast",
+                                                        "atMost"
+                                                    ]
+                                                },
+                                                "count": {
+                                                    "description": "结果对比后数量",
+                                                    "type": "integer",
+                                                    "default": -1
+                                                },
+                                                "rangeStart": {
+                                                    "description": "起始时间",
+                                                    "type": "integer",
+                                                    "default": -1
+                                                },
+                                                "rangeEnd": {
+                                                    "description": "结束时间, 最大值是0，表示验证到当日",
+                                                    "type": "integer",
+                                                    "default": 0
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "allOf": [
+                            {
+                                "if": {
+                                    "properties": {
+                                        "buyPointType": {
+                                            "enum": [
+                                                "min1",
+                                                "min5",
+                                                "min15",
+                                                "min30",
+                                                "min60"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "then": {
+                                    "required": [
+                                        "buyPointMinRangeStart",
+                                        "buyPointMinRangeEnd"
+                                    ]
+                                }
+                            }
+                        ],
                         "items": {
                             "type": "object",
                             "properties": {
@@ -266,30 +651,332 @@
             }
         },
         "sellStrategies": {
-            "description": "配置卖出股票的时间点",
+            "description": "筛选买入股票的买入点的所有配置",
             "type": "object",
             "properties": {
-                "sellPoint": {
-                    "description": "最多持有几天，如果不满足卖出的condition后强制卖出",
-                    "type": "integer",
-                    "default": 999
-                },
-                "maxKeepDay": {
-                    "description": "如果判断符合条件，在什么时间点卖出",
-                    "type": "string",
-                    "default": "close",
-                    "enum": [
-                        "close",
-                        "day2open"
-                    ]
-                },
                 "strategies": {
-                    "description": "该strategies下配置的所有condition是或的关系，满足其一就卖出",
+                    "description": "该strategies下配置的所有strategy是或的关系，满足其一就买入",
                     "type": "array",
                     "minItems": 1,
                     "items": {
-                        "type": "array",
-                        "minItems": 1,
+                        "type": "object",
+                        "properties": {
+                            "strategyName": {
+                                "description": "策略配置的名字",
+                                "type": "string",
+                                "default": "配置1"
+                            },
+                            "strategyNum": {
+                                "description": "策略配置的编号",
+                                "type": "integer",
+                                "default": 1
+                            },
+                            "buyPointType": {
+                                "description": "买入点类型，是日线级别还是分钟线级别",
+                                "type": "string",
+                                "default": "daily",
+                                "enum": [
+                                    "daily",
+                                    "min1",
+                                    "min5",
+                                    "min15",
+                                    "min30",
+                                    "min60"
+                                ]
+                            },
+                            "buyPointMinRangeStart": {
+                                "description": "如果买入点类型是分钟线级别，那么买入点的选择时间起点,格式是HH:MM，比如说09:30",
+                                "type": "string",
+                                "default": "09:30"
+                            },
+                            "buyPointMinRangeEnd": {
+                                "description": "如果买入点类型是分钟线级别，那么买入点的选择时间终点,格式是HH:MM，比如说10:30",
+                                "type": "string",
+                                "default": "10:30"
+                            },
+                            "buyPoint": {
+                                "description": "买入点的类型",
+                                "type": "string",
+                                "default": "close",
+                                "enum": [
+                                    "open",
+                                    "close",
+                                    "high",
+                                    "low"
+                                ]
+                            },
+                            "genVarsName": {
+                                "description": "该策略里生成变量的名字列表，生成变量可以在条件里使用，生成变量的值是在回测时根据配置生成的，比如说均线差值，均线差值比值等",
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            },
+                            "conditions": {
+                                "description": "策略条件,该strategy配置的所有条件是与的关系，满足所有条件才满足该strategy",
+                                "type": "array",
+                                "minItems": 1,
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "conditionName": {
+                                            "description": "条件的名字",
+                                            "type": "string",
+                                            "default": "条件1"
+                                        },
+                                        "conditionNum": {
+                                            "description": "条件的编号",
+                                            "type": "integer",
+                                            "default": 1
+                                        },
+                                        "enabled": {
+                                            "description": "该条件是否启用,如果未启用,则不参与回测,留作备用",
+                                            "type": "boolean",
+                                            "default": true
+                                        },
+                                        "dataLevel": {
+                                            "description": "该条件用的数据级别，是日线数据还是分钟线数据",
+                                            "type": "string",
+                                            "default": "dayLevel",
+                                            "enum": [
+                                                "dayLevel",
+                                                "min1Level",
+                                                "min5Level",
+                                                "min15Level",
+                                                "min30Level",
+                                                "min60Level"
+                                            ]
+                                        },
+                                        "enableContiousValidate": {
+                                            "description": "dataLevel是min1Level, min5Level, min15Level, min30Level, min60Level的时候才生效, 是否按数据级别最小单位进行分段验证，比如，如果选中5分钟级别数据，起始时间点是9：30，结束时间点是11：30，又选中该选项，即分段验证被选中，则在验证中，将按每五分钟的时间段进行验证，否则，表示9：30-11：30整体时间段满足条件",
+                                            "type": "boolean",
+                                            "default": false
+                                        },
+                                        "minLevelCompareRangeType": {
+                                            "description": "dataLevel是min1Level, min5Level, min15Level, min30Level, min60Level的时候才生效, 如果选择全部时间段,则所有*分钟级别(数据级别中选中的)时间段都需要满足,如果选中最大比例,则满足条件的时间段数量需要小于等于总时间段的百分比,如果选中最小比例,则满足条件的时间段数量需要大于等于总时间段的百分比",
+                                            "type": "string",
+                                            "default": "all",
+                                            "enum": [
+                                                "all",
+                                                "mostPercent",
+                                                "leastPercent"
+                                            ]
+                                        },
+                                        "minLevelCompareRangePct": {
+                                            "description": "dataLevel是min1Level, min5Level, min15Level, min30Level, min60Level的时候才生效, 如果该处配置90, 则当满足条件配置的是最大比例时,满足条件的时间段数量需要小于等于总时间段的90%,当满足条件配置的是最小比例时,满足条件的时间段数量需要大于等于总时间段的90%",
+                                            "type": "integer",
+                                            "default": 90,
+                                            "minimum": 0,
+                                            "maximum": 100
+                                        },
+                                        "startTime": {
+                                            "description": "dataLevel是min1Level, min5Level, min15Level, min30Level, min60Level的时候才生效, 验证的起始时间，格式是HH:MM，比如说09:30",
+                                            "type": "string",
+                                            "default": "09:30"
+                                        },
+                                        "endTime": {
+                                            "description": "dataLevel是min1Level, min5Level, min15Level, min30Level, min60Level的时候才生效, 验证的结束时间，格式是HH:MM，比如说11:30",
+                                            "type": "string",
+                                            "default": "11:30"
+                                        },
+                                        "dataType": {
+                                            "description": "用来判断的数据来源，可以是个股数据，也可以是指数数据, self代表个股数据, 其它的代表对应的指数数据",
+                                            "type": "string",
+                                            "default": "self",
+                                            "enum": [
+                                                "stock",
+                                                "SH000001"
+                                            ]
+                                        },
+                                        "varConfig": {
+                                            "description": "满足该条件的情况下, 从满足条件的数据中生成变量配置",
+                                            "type": "object",
+                                            "properties": {
+                                                "genVarConfig": {
+                                                    "description": "生成变量配置",
+                                                    "type": "object",
+                                                    "properties": {
+                                                        "enabled": {
+                                                            "description": "是否启用生成变量配置",
+                                                            "type": "boolean",
+                                                            "default": false
+                                                        },
+                                                        "configs": {
+                                                            "description": "生成变量的具体配置列表",
+                                                            "type": "array",
+                                                            "items": {
+                                                                "type": "object",
+                                                                "properties": {
+                                                                    "varName": {
+                                                                        "description": "变量名字",
+                                                                        "type": "string"
+                                                                    },
+                                                                    "genVarKey": {
+                                                                        "description": "用来生成变量的数据类型",
+                                                                        "type": "string",
+                                                                        "default": "close",
+                                                                        "enum": [
+                                                                            "close",
+                                                                            "open",
+                                                                            "today_open",
+                                                                            "high",
+                                                                            "low",
+                                                                            "average",
+                                                                            "interval_average",
+                                                                            "day_average",
+                                                                            "pre_close",
+                                                                            "change",
+                                                                            "pct_chg",
+                                                                            "interval_chg_pct",
+                                                                            "day_chg_pct",
+                                                                            "vol",
+                                                                            "sum_vol",
+                                                                            "amount",
+                                                                            "sum_amount",
+                                                                            "ma5",
+                                                                            "ma10",
+                                                                            "ma20",
+                                                                            "ma30",
+                                                                            "ma60",
+                                                                            "ma100",
+                                                                            "ma120",
+                                                                            "ma200",
+                                                                            "ma300",
+                                                                            "volma5",
+                                                                            "volma10",
+                                                                            "volma20",
+                                                                            "volma30",
+                                                                            "volma60",
+                                                                            "amountma5",
+                                                                            "amountma10",
+                                                                            "amountma20",
+                                                                            "amountma30",
+                                                                            "amountma60",
+                                                                            "DIF",
+                                                                            "DEA",
+                                                                            "MACD",
+                                                                            "boll_lower",
+                                                                            "boll_mid",
+                                                                            "boll_upper",
+                                                                            "kdj_k",
+                                                                            "kdj_d",
+                                                                            "kdj_j",
+                                                                            "rsi_6",
+                                                                            "rsi_12",
+                                                                            "rsi_24",
+                                                                            "turnover_rate",
+                                                                            "interval_turnover_rate",
+                                                                            "day_turnover_rate",
+                                                                            "volume_ratio",
+                                                                            "total_mv",
+                                                                            "circ_mv"
+                                                                        ]
+                                                                    },
+                                                                    "selectSequence": {
+                                                                        "description": "如果生成变量需要从满足条件的数据中选择一个数据来生成变量，那么该配置用来配置选择哪个数据，比如说满足条件的有三个时间端，选第一个还是最后一个 ",
+                                                                        "type": "string",
+                                                                        "default": "first",
+                                                                        "enum": [
+                                                                            "first",
+                                                                            "last"
+                                                                        ]
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "sourceKey": {
+                                        },
+                                        "sourceDataRange": {
+                                        },
+                                        "sourceDataMethod": {
+                                        },
+                                        "compareSourceRelativeDay": {
+                                        },
+                                        "sourceFixValue": {
+                                        },
+                                        "sourceKeyVar": {
+                                        },
+                                        "compareType": {
+                                        },
+                                        "deviationPct": {
+                                        },
+                                        "difRatioPct": {
+                                        },
+                                        "destKey": {
+                                        },
+                                        "destDataRange": {
+                                        },
+                                        "destDataMethod": {
+                                        },
+                                        "compareDestRelativeDay": {
+                                        },
+                                        "destFixValue": {
+                                        },
+                                        "destKeyVar": {
+                                        },
+                                        "range": {
+                                            "description": "上述比较的范围",
+                                            "type": "object",
+                                            "properties": {
+                                                "type": {
+                                                    "description": "范围",
+                                                    "type": "string",
+                                                    "default": "all",
+                                                    "enum": [
+                                                        "all",
+                                                        "any",
+                                                        "atLeast",
+                                                        "atMost"
+                                                    ]
+                                                },
+                                                "count": {
+                                                    "description": "结果对比后数量",
+                                                    "type": "integer",
+                                                    "default": -1
+                                                },
+                                                "rangeStart": {
+                                                    "description": "起始时间",
+                                                    "type": "integer",
+                                                    "default": -1
+                                                },
+                                                "rangeEnd": {
+                                                    "description": "结束时间, 最大值是0，表示验证到当日",
+                                                    "type": "integer",
+                                                    "default": 0
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "allOf": [
+                            {
+                                "if": {
+                                    "properties": {
+                                        "buyPointType": {
+                                            "enum": [
+                                                "min1",
+                                                "min5",
+                                                "min15",
+                                                "min30",
+                                                "min60"
+                                            ]
+                                        }
+                                    }
+                                },
+                                "then": {
+                                    "required": [
+                                        "buyPointMinRangeStart",
+                                        "buyPointMinRangeEnd"
+                                    ]
+                                }
+                            }
+                        ],
                         "items": {
                             "type": "object",
                             "properties": {
@@ -340,8 +1027,13 @@
                                         "MACD"
                                     ]
                                 },
+                                "compareSourceRelativeDay": {
+                                    "description": "相对于当前日期的相对日",
+                                    "type": "integer",
+                                    "default": "0"
+                                },
                                 "compareType": {
-                                    "description": "比较方法",
+                                    "description": "比较方法,如果higher,是source比dest high",
                                     "type": "string",
                                     "default": "higher",
                                     "enum": [
@@ -350,21 +1042,15 @@
                                         "equal"
                                     ]
                                 },
-                                "ratio": {
-                                    "description": "dest data的比例，为百分之",
+                                "deviationPct": {
+                                    "description": "比较的可允许偏差",
                                     "type": "integer",
                                     "default": 0
                                 },
-                                "deviation": {
-                                    "description": "比较的可允许偏差",
-                                    "type": "string",
-                                    "default": "0.1%",
-                                    "enum": [
-                                        "0.1%",
-                                        "0.2%",
-                                        "0.5%",
-                                        "1%"
-                                    ]
+                                "difRatioPct": {
+                                    "description": "如果是higher,那么value需要大于0,比如说5,那么就是source需要比dest大5%;如果是lower,那么value需要小于0,比如说-5,那么source需要笔dest小5%",
+                                    "type": "integer",
+                                    "default": "0"
                                 },
                                 "compareDest": {
                                     "description": "用来判断的目的数据类型",
@@ -372,7 +1058,6 @@
                                     "default": "price",
                                     "enum": [
                                         "fix",
-                                        "buyPrice",
                                         "open",
                                         "high",
                                         "low",
@@ -406,6 +1091,16 @@
                                         "MACD"
                                     ]
                                 },
+                                "compareDestRelativeDay": {
+                                    "description": "相对于当前日期的相对日",
+                                    "type": "integer",
+                                    "default": "0"
+                                },
+                                "fixValue": {
+                                    "description": "如果上面选的是fix，这里填fix value",
+                                    "type": "integer",
+                                    "default": "0"
+                                },
                                 "range": {
                                     "description": "上述比较的范围",
                                     "type": "object",
@@ -421,13 +1116,18 @@
                                                 "atMost"
                                             ]
                                         },
+                                        "count": {
+                                            "description": "结果对比后数量",
+                                            "type": "integer",
+                                            "default": -1
+                                        },
                                         "rangeStart": {
                                             "description": "起始时间",
                                             "type": "integer",
                                             "default": -1
                                         },
                                         "rangeEnd": {
-                                            "description": "最大值是0，表示验证到当日",
+                                            "description": "结束时间, 最大值是0，表示验证到当日",
                                             "type": "integer",
                                             "default": 0
                                         }
@@ -438,6 +1138,25 @@
                     }
                 }
             }
+        },
+        "statisticResult": {
+
         }
-    }
+    },
+    "allOf": [
+        {
+            "if": {
+                "properties": {
+                    "stockSource": {
+                        "const": "range"
+                    }
+                }
+            },
+            "then": {
+                "required": [
+                    "stockList"
+                ]
+            }
+        }
+    ]
 }
